@@ -20,30 +20,12 @@ from
 ---
 Distinct Count of key Columns: 
 ```
-SELECT 
-  DISTINCT STATUS 
-FROM 
-  sales_data_sample;
-SELECT 
-  DISTINCT YEAR_ID 
-FROM 
-  sales_data_sample;
-SELECT 
-  DISTINCT PRODUCTLINE 
-FROM 
-  sales_data_sample;
-SELECT 
-  DISTINCT COUNTRY 
-FROM 
-  sales_data_sample;
-SELECT 
-  DISTINCT DEALSIZE 
-FROM 
-  sales_data_sample;
-SELECT 
-  DISTINCT TERRITORY 
-FROM 
-  sales_data_sample;
+SELECT DISTINCT STATUS FROM sales_data_sample;
+SELECT DISTINCT YEAR_ID FROM sales_data_sample;
+SELECT DISTINCT PRODUCTLINE FROM sales_data_sample;
+SELECT DISTINCT COUNTRY FROM sales_data_sample;
+SELECT DISTINCT DEALSIZE FROM sales_data_sample;
+SELECT DISTINCT TERRITORY FROM sales_data_sample;
 ```
 ![2](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/4ec81483-bd8a-451a-978f-4951299e1852)
 ---
@@ -73,4 +55,29 @@ GROUP BY DEALSIZE
 ORDER BY 2 desc;
 ```
 ![5](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/8d0db57a-955c-4fdc-a5fd-31f2072fdc6d)
+---
+Revenue by Months:
+```
+SELECT MONTH_ID,  sum(sales) AS Revenue, count(ORDERNUMBER) AS Frequency
+FROM sales_data_sample
+--WHERE YEAR_ID = 2005
+GROUP BY MONTH_ID
+ORDER BY 2 DESC; 
+```
+![6](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/145bf2d1-da4f-42ab-9f80-471d43938cd5)
+---
+Customers Monetary Value, Recency and Frequency:
+```
+SELECT 
+	CUSTOMERNAME,
+	sum(sales) MonetaryValue,
+	avg(sales) AvgMonetaryValue,
+	count(ORDERNUMBER) Frequency,
+	max(ORDERDATE) last_order_date,
+	(select max(ORDERDATE) from sales_data_sample) max_order_date,
+	DATEDIFF(DD,max(ORDERDATE),(select max(ORDERDATE) from sales_data_sample)) Recency 
+FROM sales_data_sample
+Group By CUSTOMERNAME;
+```
+![7](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/d84b6682-27cb-4a09-af3c-7ae23298f7a9)
 
