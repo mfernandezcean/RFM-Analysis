@@ -112,4 +112,20 @@ into #rfm
 from rfm_calc c
 ```
 ![8](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/42d62fda-b86f-4c2b-8d29-e0d44e291444)
+---
+Bulding a Case Statment to classify Customers:
+```
+select CUSTOMERNAME, rfm_recency, rfm_frequency, rfm_monetary,
+	case	
+		when rfm_cell_string in (111,112,121,122,123,132,211,212,114,141) then 'lost_customer'
+		when rfm_cell_string in (133, 134, 143,244,334,343,344, 144) then 'slipping away, cannt lose'
+		when rfm_cell_string in (311,411,331) then 'new customers'
+		when rfm_cell_string in (222, 223, 233, 322) then 'potential churners'
+		when rfm_cell_string in (323, 333, 321, 422, 332, 432) then 'active'
+		when rfm_cell_string in (433, 434, 443, 444) then 'loyal'
+	end rfm_segment
+from #rfm
+```
+![9](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/cd084338-dad6-4c0a-8a12-6f0737abf73e)
+
 
