@@ -55,4 +55,22 @@ GROUP BY PRODUCTLINE
 ORDER BY 2 desc;
 ```
 ![3](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/c6cfa7f7-c248-40d7-802d-85f6c919ca41)
+---
+Year Revenue:
+```
+SELECT YEAR_ID,  sum(sales) AS Revenue 
+FROM sales_data_sample
+GROUP BY YEAR_ID
+ORDER BY 2 desc;
+```
+![4](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/6d17ae03-0d9e-4a7e-947f-c4993c34231c)
+---
+Deal Size Revenue:
+```
+SELECT DEALSIZE,  sum(sales) AS Revenue 
+FROM sales_data_sample
+GROUP BY DEALSIZE
+ORDER BY 2 desc;
+```
+![5](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/8d0db57a-955c-4fdc-a5fd-31f2072fdc6d)
 
