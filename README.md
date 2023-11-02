@@ -80,4 +80,36 @@ FROM sales_data_sample
 Group By CUSTOMERNAME;
 ```
 ![7](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/d84b6682-27cb-4a09-af3c-7ae23298f7a9)
+---
+Creatin of Table with Recency, Frequency and Monetary Parameters:
+```
+DROP TABLE IF EXISTS #rfm;
+with rfm as 
+(
+SELECT 
+	CUSTOMERNAME,
+	sum(sales) MonetaryValue,
+	avg(sales) AvgMonetaryValue,
+	count(ORDERNUMBER) Frequency,
+	max(ORDERDATE) last_order_date,
+	(select max(ORDERDATE) from sales_data_sample) max_order_date,
+	DATEDIFF(DD,max(ORDERDATE),(select max(ORDERDATE) from sales_data_sample)) Recency 
+FROM sales_data_sample
+Group By CUSTOMERNAME
+),
+rfm_calc as
+
+(
+	select r.*,
+		NTILE(4) OVER (order by Recency) rfm_recency,
+		NTILE(4) OVER (order by Frequency) rfm_frequency,
+		NTILE(4) OVER (order by MonetaryValue) rfm_monetary
+	from rfm r
+)
+select c.*, rfm_recency + rfm_frequency + rfm_monetary as rfm_cell,
+cast(rfm_recency as varchar) + cast(rfm_frequency as varchar) + CAST(rfm_monetary as varchar) rfm_cell_string 
+into #rfm
+from rfm_calc c
+```
+![8](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/42d62fda-b86f-4c2b-8d29-e0d44e291444)
 
