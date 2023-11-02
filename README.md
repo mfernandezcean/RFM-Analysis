@@ -127,5 +127,42 @@ select CUSTOMERNAME, rfm_recency, rfm_frequency, rfm_monetary,
 from #rfm
 ```
 ![9](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/cd084338-dad6-4c0a-8a12-6f0737abf73e)
+---
+Products:
+```
+select ORDERNUMBER
+from(
+	select ORDERNUMBER, count(*) rn
+	FROM sales_data_sample
+	where STATUS = 'Shipped'
+	group by ORDERNUMBER
+)m
+where rn = 2 
+```
+![11](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/a2de9485-7159-4bb7-82a6-6f9753a8b057)
+---
+Creation of Product Code to classify: 
+```
+select distinct ORDERNUMBER, stuff(
+	(select ',' + PRODUCTCODE
+	from sales_data_sample p
+	where ORDERNUMBER in
+		(
+				select ORDERNUMBER
+				from(
+				select ORDERNUMBER, count(*) rn
+				FROM sales_data_sample
+				where STATUS = 'Shipped'
+				group by ORDERNUMBER
+			)m
+			where rn = 2 
+		)
+		and p.ORDERNUMBER = s.ORDERNUMBER 
+		for xml path (''))
 
+		,1, 1, '') ProductCodes
+from sales_data_sample s
+order by ProductCodes desc 
+```
+![12](https://github.com/mfernandezcean/Marketing_Campaign_Results/assets/105746149/6b9b0ea8-e4c5-4e1d-b512-e5c7f333dc88)
 
